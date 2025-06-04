@@ -17,16 +17,17 @@ interface SubjectTableProps {
 }
 
 const gradeOptions = [
-  { value: "1.00", label: "1.00 (Excellent)" },
-  { value: "1.25", label: "1.25 (Very Good)" },
-  { value: "1.50", label: "1.50 (Very Good)" },
-  { value: "1.75", label: "1.75 (Good)" },
-  { value: "2.00", label: "2.00 (Good)" },
-  { value: "2.25", label: "2.25 (Satisfactory)" },
-  { value: "2.50", label: "2.50 (Satisfactory)" },
-  { value: "2.75", label: "2.75 (Fair)" },
-  { value: "3.00", label: "3.00 (Pass)" },
-  { value: "5.00", label: "5.00 (Fail)" },
+  { value: "1.00", label: "1.00" },
+  { value: "1.25", label: "1.25" },
+  { value: "1.50", label: "1.50" },
+  { value: "1.75", label: "1.75" },
+  { value: "2.00", label: "2.00" },
+  { value: "2.25", label: "2.25" },
+  { value: "2.50", label: "2.50" },
+  { value: "2.75", label: "2.75" },
+  { value: "3.00", label: "3.00" },
+  { value: "4.00", label: "4.00" },
+  { value: "5.00", label: "5.00" },
 ]
 
 export default function SubjectTable({
