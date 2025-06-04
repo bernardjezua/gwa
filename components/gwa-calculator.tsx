@@ -48,8 +48,19 @@ export default function GwaCalculator() {
   }
 
   const validateInputs = () => {
-    // Only consider subjects that are not excluded from GWA calculation
-    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
+    const validSubjects = subjects.filter((s) => {
+      // Check if subject has valid name (not empty)
+      const hasValidName = s.name.trim() !== "";
+      
+      // Check if subject has valid units and grade
+      const hasValidUnits = s.units > 0;
+      const hasValidGrade = s.grade > 0;
+      
+      // Check if subject is excluded from GWA calculation
+      const isExcluded = isExcludedFromGWA(s.name);
+      
+      return hasValidName && hasValidUnits && hasValidGrade && !isExcluded;
+    });
 
     if (validSubjects.length === 0) {
       toast({
