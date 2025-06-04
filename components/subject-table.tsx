@@ -210,11 +210,11 @@ export default function SubjectTable({
 
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Subject Name</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Subject Name</label>
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
                           isExcluded ? "bg-gray-50 text-gray-600" : ""
                         }`}
                         placeholder={`Subject ${index + 1}`}
@@ -223,7 +223,7 @@ export default function SubjectTable({
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Units</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Units</label>
                         <Input
                           type="number"
                           min="0"
@@ -231,7 +231,7 @@ export default function SubjectTable({
                           step="0.5"
                           value={subject.units || ""}
                           onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
-                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
                             isExcluded ? "bg-gray-50 text-gray-600" : ""
                           }`}
                           placeholder="3.0"
@@ -239,13 +239,13 @@ export default function SubjectTable({
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Grade</label>
                         <Select
                           value={formatGrade(subject.grade)}
                           onValueChange={(value) => handleGradeChange(subject.id, value)}
                         >
                           <SelectTrigger
-                            className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                            className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
                               isExcluded ? "bg-gray-50 text-gray-600" : ""
                             }`}
                           >
