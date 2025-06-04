@@ -51,10 +51,10 @@ export default function SubjectTable({
   const handleUnitsChange = (id: number, value: string) => {
     const numValue = Number.parseFloat(value) || 0
 
-    if (numValue > 10) {
+    if (numValue > 12) {
       toast({
         title: "Invalid Units",
-        description: "Units cannot exceed 10.0",
+        description: "Units cannot exceed 12.",
         variant: "fail",
       })
     }
