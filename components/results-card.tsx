@@ -111,7 +111,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
           Your GWA Result
         </h2>
         <p className="text-white/90 text-sm md:text-base">
-          Based on {validSubjects.length} subjects with {totalUnits} total units
+          Based on {validSubjects.length} courses with {totalUnits} total units.
         </p>
       </div>
 
