@@ -22,6 +22,7 @@ export default function GwaCalculator() {
     { id: 3, name: "", units: 0, grade: 0 },
   ])
   const [gwa, setGwa] = useState<number | null>(null)
+  const [hasCalculated, setHasCalculated] = useState(false)
 
   const addSubject = () => {
     const newId = Math.max(...subjects.map((s) => s.id)) + 1
@@ -36,6 +37,8 @@ export default function GwaCalculator() {
 
   const updateSubject = (id: number, field: keyof Subject, value: string | number) => {
     setSubjects(subjects.map((s) => (s.id === id ? { ...s, [field]: value } : s)))
+    // Reset calculation state when subjects are modified
+    setHasCalculated(false)
   }
 
   const validateInputs = () => {
@@ -55,7 +58,7 @@ export default function GwaCalculator() {
     if (invalidGrades.length > 0) {
       toast({
         title: "Invalid Grade Range",
-        description: "Grades must be between 1 and 10.",
+        description: "Grades must be between 1.0 and 5.",
         variant: "fail",
       })
       return false
@@ -66,7 +69,7 @@ export default function GwaCalculator() {
     if (invalidUnits.length > 0) {
       toast({
         title: "Invalid Units",
-        description: "Units must be between 1 and 10./",
+        description: "Units must be between 1 and 10.",
         variant: "fail",
       })
       return false
@@ -86,12 +89,13 @@ export default function GwaCalculator() {
 
     const calculatedGwa = totalWeightedGrades / totalUnits
     setGwa(Math.round(calculatedGwa * 100) / 100)
+    setHasCalculated(true)
 
     // Determine academic standing for toast message
     let standing = "Good Standing"
-    if (calculatedGwa <= 1.45) standing = "University Scholar"
-    else if (calculatedGwa <= 1.75) standing = "College Scholar"
-    else if (calculatedGwa <= 2.0) standing = "Honor Roll"
+    if (calculatedGwa < 1.45) standing = "University Scholar"
+    else if (calculatedGwa < 1.75) standing = "College Scholar"
+    else if (calculatedGwa < 2.0) standing = "Honor Roll"
 
     toast({
       title: "GWA Calculated Successfully!",
@@ -116,7 +120,9 @@ export default function GwaCalculator() {
           onCalculateGWA={calculateGWA}
         />
 
-        {gwa !== null && <ResultsCard gwa={gwa} totalUnits={totalUnits} validSubjects={validSubjects} />}
+        {gwa !== null && hasCalculated && (
+          <ResultsCard gwa={gwa} totalUnits={totalUnits} validSubjects={validSubjects} />
+        )}
 
         <InfoCards />
         <Footer />
