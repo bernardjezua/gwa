@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "UP GWA Calculator",
-  description: "Calculate your General Weighted Average for University of the Philippines",
+  description: "Calculate your General Weighted Average (GWA) based on the UP grading system.",
     generator: 'v0.dev'
 }
 
