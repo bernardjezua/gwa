@@ -84,11 +84,27 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
 
     if (hasVariation) {
       // If there's variation, show best (lowest grade) and worst (highest grade)
-      bestSubject = subjectsWithNames.reduce((best, current) => (current.grade < best.grade ? current : best))
-      worstSubject = subjectsWithNames.reduce((worst, current) => (current.grade > worst.grade ? current : worst))
+      bestSubject = subjectsWithNames.reduce((best, current) => 
+        (current.grade < best.grade ? current : best))
+      worstSubject = subjectsWithNames.reduce((worst, current) => 
+        (current.grade > worst.grade ? current : worst))
     } else {
-      // If grades are similar, show best by highest units, no worst subject
-      bestSubject = subjectsWithNames.reduce((best, current) => (current.units > best.units ? current : best))
+      // If grades are similar, find the course with highest grade
+      // If multiple courses have same highest grade, pick the one with highest units
+      // If still tied, pick the earliest one
+      bestSubject = subjectsWithNames.reduce((best, current) => {
+        if (current.grade < best.grade) {
+          return current
+        } else if (current.grade === best.grade) {
+          if (current.units > best.units) {
+            return current
+          } else if (current.units === best.units) {
+            // If same grade and units, return the earlier one (keep current best)
+            return best
+          }
+        }
+        return best
+      })
     }
 
     return {
