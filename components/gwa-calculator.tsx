@@ -17,9 +17,9 @@ export interface Subject {
 
 export default function GwaCalculator() {
   const [subjects, setSubjects] = useState<Subject[]>([
-    { id: 1, name: "", units: 0, grade: 0 },
-    { id: 2, name: "", units: 0, grade: 0 },
-    { id: 3, name: "", units: 0, grade: 0 },
+    { id: 1, name: "", units: 3, grade: 0 },
+    { id: 2, name: "", units: 3, grade: 0 },
+    { id: 3, name: "", units: 3, grade: 0 },
   ])
   const [gwa, setGwa] = useState<number | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
@@ -32,7 +32,7 @@ export default function GwaCalculator() {
 
   const addSubject = () => {
     const newId = Math.max(...subjects.map((s) => s.id)) + 1
-    setSubjects([...subjects, { id: newId, name: "", units: 0, grade: 0 }])
+    setSubjects([...subjects, { id: newId, name: "", units: 3, grade: 0 }])
   }
 
   const removeSubject = (id: number) => {
@@ -49,9 +49,6 @@ export default function GwaCalculator() {
 
   const validateInputs = () => {
     const validSubjects = subjects.filter((s) => {
-      // Check if subject has valid name (not empty)
-      const hasValidName = s.name.trim() !== "";
-      
       // Check if subject has valid units and grade
       const hasValidUnits = s.units > 0;
       const hasValidGrade = s.grade > 0;
@@ -59,7 +56,7 @@ export default function GwaCalculator() {
       // Check if subject is excluded from GWA calculation
       const isExcluded = isExcludedFromGWA(s.name);
       
-      return hasValidName && hasValidUnits && hasValidGrade && !isExcluded;
+      return hasValidUnits && hasValidGrade && !isExcluded;
     });
 
     if (validSubjects.length === 0) {
@@ -116,7 +113,7 @@ export default function GwaCalculator() {
     else if (calculatedGwa < 1.75) standing = "College Scholar"
     else if (calculatedGwa < 2.0) standing = "Honor Roll"
 
-    const excludedCount = subjects.filter((s) => s.name.trim() !== "" && isExcludedFromGWA(s.name)).length
+    const excludedCount = subjects.filter((s) => isExcludedFromGWA(s.name)).length
 
     toast({
       title: "GWA Calculated Successfully!",

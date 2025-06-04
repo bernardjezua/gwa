@@ -67,8 +67,8 @@ export default function SubjectTable({
           <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
           Subject Information
         </h2>
-        <p className="text-red-100 text-sm md:text-base">
-          Enter your academic courses, units, and grades.
+        <p className="text-red-100 text-sm">
+          Enter your academic courses, units, and grades. Course codes are optional but recommended for performance insights.
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
@@ -214,14 +214,24 @@ export default function SubjectTable({
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Units</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Units</label>
                         <Input
                           type="number"
                           min="0"
-                          max="10"
+                          max="12"
                           step="0.5"
-                          value={subject.units || ""}
-                          onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
+                          value={subject.units}
+                          onChange={(e) => {
+                            const rawValue = e.target.value;
+                            const parsedValue = rawValue === "" ? "" : parseFloat(rawValue);
+                            handleUnitsChange(subject.id, parsedValue.toString());
+                          }}
+                          onBlur={(e) => {
+                            // If the user left the input empty, reset to 3
+                            if (e.target.value === "") {
+                              handleUnitsChange(subject.id, "3");
+                            }
+                          }}
                           className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
                             isExcluded ? "bg-gray-50 text-gray-600" : ""
                           }`}
