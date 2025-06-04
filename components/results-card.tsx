@@ -106,13 +106,10 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
     <div className="shadow-2xl border-0 overflow-hidden mb-6 md:mb-8 rounded-xl bg-white">
       {/* Custom Header - Dynamic Color Based on Standing */}
       <div className={`bg-gradient-to-r ${standing.headerGradient} text-white px-4 md:px-6 py-6 rounded-t-xl`}>
-        <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3 mb-2">
+        <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3">
           <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
           Your GWA Result
         </h2>
-        <p className="text-white/90 text-sm md:text-base">
-          Based on {validSubjects.length} courses with {totalUnits} total units.
-        </p>
       </div>
 
       {/* Content */}
