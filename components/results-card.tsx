@@ -155,7 +155,9 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
             </div>
             <div className={`text-center p-3 md:p-4 ${standing.statsBackground} rounded-lg`}>
               <div className={`text-xl md:text-2xl font-bold ${standing.statsTextColor}`}>{validSubjects.length}</div>
-              <div className="text-xs md:text-sm text-gray-600"># of Courses</div>
+              <div className="text-xs md:text-sm text-gray-600">
+                {validSubjects.length === 1 ? "Academic Course" : "Academic Courses"}
+              </div>
             </div>
           </div>
 

@@ -24,6 +24,12 @@ export default function GwaCalculator() {
   const [gwa, setGwa] = useState<number | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
 
+  // Check if subject is excluded from GWA calculation
+  const isExcludedFromGWA = (subjectName: string): boolean => {
+    const name = subjectName.toUpperCase()
+    return name.includes("HK") || name.includes("PE") || name.includes("NSTP")
+  }
+
   const addSubject = () => {
     const newId = Math.max(...subjects.map((s) => s.id)) + 1
     setSubjects([...subjects, { id: newId, name: "", units: 0, grade: 0 }])
@@ -42,12 +48,13 @@ export default function GwaCalculator() {
   }
 
   const validateInputs = () => {
-    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0)
+    // Only consider subjects that are not excluded from GWA calculation
+    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
 
     if (validSubjects.length === 0) {
       toast({
         title: "Incomplete Information",
-        description: "Please enter all missing fields.",
+        description: "Please enter missing fields.",
         variant: "fail",
       })
       return false
@@ -58,7 +65,7 @@ export default function GwaCalculator() {
     if (invalidGrades.length > 0) {
       toast({
         title: "Invalid Grade Range",
-        description: "Grades must be between 1.0 and 5.",
+        description: "Grades must be between 1.0 and 5.0.",
         variant: "fail",
       })
       return false
@@ -67,6 +74,11 @@ export default function GwaCalculator() {
     // Check for invalid units
     const invalidUnits = validSubjects.filter((s) => s.units <= 0 || s.units > 12)
     if (invalidUnits.length > 0) {
+      toast({
+        title: "Invalid Units",
+        description: "Units must be within the range of 1 to 12.",
+        variant: "fail",
+      })
       return false
     }
 
@@ -78,7 +90,8 @@ export default function GwaCalculator() {
       return
     }
 
-    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0)
+    // Only include subjects that are not excluded from GWA calculation
+    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
     const totalWeightedGrades = validSubjects.reduce((sum, subject) => sum + subject.grade * subject.units, 0)
     const totalUnits = validSubjects.reduce((sum, subject) => sum + subject.units, 0)
 
@@ -92,15 +105,18 @@ export default function GwaCalculator() {
     else if (calculatedGwa < 1.75) standing = "College Scholar"
     else if (calculatedGwa < 2.0) standing = "Honor Roll"
 
+    const excludedCount = subjects.filter((s) => s.name.trim() !== "" && isExcludedFromGWA(s.name)).length
+
     toast({
       title: "GWA Calculated Successfully!",
-      description: `Your GWA is shown below.`,
+      description: `Your GWA is ${calculatedGwa.toFixed(2)} - ${standing}${excludedCount > 0 ? ` (${excludedCount} course/s excluded).` : "."}`,
       variant: "success",
     })
   }
 
   const totalUnits = subjects.reduce((sum, s) => sum + (s.units || 0), 0)
-  const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0)
+  const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
+  const allValidSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0) // For stats display
 
   return (
     <div className="flex flex-col w-full m-0 p-0 overflow-x-hidden">
@@ -116,7 +132,11 @@ export default function GwaCalculator() {
         />
 
         {gwa !== null && hasCalculated && (
-          <ResultsCard gwa={gwa} totalUnits={totalUnits} validSubjects={validSubjects} />
+          <ResultsCard
+            gwa={gwa}
+            totalUnits={validSubjects.reduce((sum, s) => sum + s.units, 0)}
+            validSubjects={validSubjects}
+          />
         )}
 
         <InfoCards />
