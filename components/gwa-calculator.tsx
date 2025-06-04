@@ -63,11 +63,6 @@ export default function GwaCalculator() {
     // Check for invalid grades
     const invalidGrades = validSubjects.filter((s) => s.grade < 1.0 || s.grade > 5.0)
     if (invalidGrades.length > 0) {
-      toast({
-        title: "Invalid Grade Range",
-        description: "Grades must be between 1.0 and 5.0.",
-        variant: "fail",
-      })
       return false
     }
 
