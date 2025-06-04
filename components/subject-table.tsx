@@ -68,7 +68,7 @@ export default function SubjectTable({
           Subject Information
         </h2>
         <p className="text-red-100 text-sm md:text-base">
-          Enter your academic courses, units, and grades. Select from standard UP grade values.
+          Enter your academic courses, units, and grades.
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
@@ -81,7 +81,6 @@ export default function SubjectTable({
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           <div className="min-w-full">
-            {/* Table Header */}
             <div className="bg-gray-50 border-b border-gray-200">
               <div className="grid grid-cols-12 gap-4 px-6 py-4 font-semibold text-gray-700">
                 <div className="col-span-5 flex items-center gap-2">
