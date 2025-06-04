@@ -1,0 +1,21 @@
+import type React from "react"
+import "@/app/globals.css"
+import { Inter } from "next/font/google"
+
+const inter = Inter({ subsets: ["latin"] })
+
+export const metadata = {
+  title: "UP GWA Calculator",
+  description: "Calculate your General Weighted Average for University of the Philippines",
+    generator: 'v0.dev'
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={`min-h-screen bg-background font-sans antialiased p-0 m-0 w-full ${inter.className}`}>
+        {children}
+      </body>
+    </html>
+  )
+}
