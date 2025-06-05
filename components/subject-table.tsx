@@ -65,7 +65,7 @@ export default function SubjectTable({
       <div className="bg-gradient-to-r from-red-800 to-red-700 text-white px-4 md:px-6 py-6 rounded-t-xl">
         <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3 mb-2">
           <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
-          Subject Information
+          Course Information
         </h2>
         <p className="text-red-100 text-sm">
           Enter your academic courses, units, and grades. Course codes are optional but recommended for performance insights.
@@ -108,7 +108,7 @@ export default function SubjectTable({
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                           isExcluded ? "bg-gray-50 text-gray-600" : ""
                         }`}
                         placeholder={`Course ${index + 1}`}
@@ -127,7 +127,7 @@ export default function SubjectTable({
                         step="0.5"
                         value={subject.units || ""}
                         onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                           isExcluded ? "bg-gray-50 text-gray-600" : ""
                         }`}
                         placeholder="3.0"
@@ -139,7 +139,7 @@ export default function SubjectTable({
                         onValueChange={(value) => handleGradeChange(subject.id, value)}
                       >
                         <SelectTrigger
-                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 ${
+                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                             isExcluded ? "bg-gray-50 text-gray-600" : ""
                           }`}
                         >
@@ -181,7 +181,7 @@ export default function SubjectTable({
                 <div key={subject.id} className={`p-4 space-y-4 ${isExcluded ? "bg-gray-50" : ""}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-medium text-gray-900">Subject {index + 1}</h3>
+                      <h3 className="font-medium text-gray-900">Course {index + 1}</h3>
                       {isExcluded && (
                         <div className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
                           Excluded
@@ -201,11 +201,11 @@ export default function SubjectTable({
 
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Subject Name</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Course Code</label>
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
+                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                           isExcluded ? "bg-gray-50 text-gray-600" : ""
                         }`}
                         placeholder={`Subject ${index + 1}`}
@@ -232,7 +232,7 @@ export default function SubjectTable({
                               handleUnitsChange(subject.id, "3");
                             }
                           }}
-                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
+                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                             isExcluded ? "bg-gray-50 text-gray-600" : ""
                           }`}
                           placeholder="3.0"
@@ -246,7 +246,7 @@ export default function SubjectTable({
                           onValueChange={(value) => handleGradeChange(subject.id, value)}
                         >
                           <SelectTrigger
-                            className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm ${
+                            className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
                               isExcluded ? "bg-gray-50 text-gray-600" : ""
                             }`}
                           >
