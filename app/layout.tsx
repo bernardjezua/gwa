@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "UP GWA Calculator",
   description: "Calculate your General Weighted Average (GWA) based on the UP grading system.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
