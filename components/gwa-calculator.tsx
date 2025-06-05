@@ -17,9 +17,9 @@ export interface Subject {
 
 export default function GwaCalculator() {
   const [subjects, setSubjects] = useState<Subject[]>([
-    { id: 1, name: "", units: 3, grade: 0 },
-    { id: 2, name: "", units: 3, grade: 0 },
-    { id: 3, name: "", units: 3, grade: 0 },
+    { id: 1, name: "", units: 3, grade: 1.0 },
+    { id: 2, name: "", units: 3, grade: 1.0 },
+    { id: 3, name: "", units: 3, grade: 1.0 },
   ])
   const [gwa, setGwa] = useState<number | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
@@ -37,7 +37,7 @@ export default function GwaCalculator() {
 
   const addSubject = () => {
     const newId = Math.max(...subjects.map((s) => s.id)) + 1
-    setSubjects([...subjects, { id: newId, name: "", units: 3, grade: 0 }])
+    setSubjects([...subjects, { id: newId, name: "", units: 3, grade: 1.0 }])
   }
 
   const removeSubject = (id: number) => {
