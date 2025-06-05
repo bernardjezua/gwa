@@ -185,7 +185,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-green-700">{insights.best.grade.toFixed(4)}</span>
+                      <span className="text-lg font-bold text-green-700">{insights.best.grade.toFixed(2)}</span>
                       <span className="text-xs text-gray-500">{insights.best.units} units</span>
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-bold text-orange-700">{insights.worst.grade.toFixed(4)}</span>
+                        <span className="text-lg font-bold text-orange-700">{insights.worst.grade.toFixed(2)}</span>
                         <span className="text-xs text-gray-500">{insights.worst.units} units</span>
                       </div>
                     </div>
