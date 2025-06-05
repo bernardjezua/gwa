@@ -136,7 +136,7 @@ export default function SubjectTable({
                     <div className="col-span-2">
                       <Input
                         type="number"
-                        min="0.5"
+                        min="0.1"
                         max="20"
                         step="0.5"
                         value={subject.units || ""}
@@ -231,7 +231,7 @@ export default function SubjectTable({
                         <label className="block text-sm font-medium text-gray-700 mb-1">Units</label>
                         <Input
                           type="number"
-                          min="0.5"
+                          min="0.1"
                           max="20"
                           step="0.5"
                           value={subject.units}

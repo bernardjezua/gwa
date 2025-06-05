@@ -150,11 +150,11 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
           {/* Dynamic Stats Cards Color Based on Standing */}
           <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-md mx-auto mb-6 md:mb-8">
             <div className={`text-center p-3 md:p-4 ${standing.statsBackground} rounded-lg`}>
-              <div className={`text-xl md:text-2xl font-bold ${standing.statsTextColor}`}>{totalUnits}</div>
+              <div className={`text-xl md:text-2xl font-bold truncate ${standing.statsTextColor}`}>{totalUnits.toFixed(2)}</div>
               <div className="text-xs md:text-sm text-gray-600">Total Units</div>
             </div>
             <div className={`text-center p-3 md:p-4 ${standing.statsBackground} rounded-lg`}>
-              <div className={`text-xl md:text-2xl font-bold ${standing.statsTextColor}`}>{validSubjects.length}</div>
+              <div className={`text-xl md:text-2xl font-bold truncate ${standing.statsTextColor}`}>{validSubjects.length}</div>
               <div className="text-xs md:text-sm text-gray-600">
                 {validSubjects.length === 1 ? "Academic Course" : "Academic Courses"}
               </div>
