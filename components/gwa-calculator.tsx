@@ -79,11 +79,11 @@ export default function GwaCalculator() {
     }
 
     // Check for invalid units
-    const invalidUnits = validSubjects.filter((s) => s.units <= 0 || s.units > 15)
+    const invalidUnits = validSubjects.filter((s) => s.units <= 0 || s.units > 20)
     if (invalidUnits.length > 0) {
       toast({
         title: "Invalid Units",
-        description: "Units must be within the range of 1 to 15.",
+        description: "Units must be within the range of 0.5 to 20.",
         variant: "fail",
       })
       return false
