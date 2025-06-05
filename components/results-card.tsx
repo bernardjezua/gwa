@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+import confetti from "canvas-confetti"
 import { Badge } from "@/components/ui/badge"
 import { Award, Star, Trophy, Medal, TrendingUp } from "lucide-react"
 import type { Subject } from "./gwa-calculator"
@@ -66,14 +68,11 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
     }
   }
 
-  // Get performance insights
   const getPerformanceInsights = () => {
     if (validSubjects.length === 0) return null
-
     const subjectsWithNames = validSubjects.filter((s) => s.name.trim() !== "")
     if (subjectsWithNames.length === 0) return null
 
-    // Check if there's significant grade variation (difference > 0.5)
     const grades = subjectsWithNames.map((s) => s.grade)
     const minGrade = Math.min(...grades)
     const maxGrade = Math.max(...grades)
@@ -83,25 +82,17 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
     let worstSubject = null
 
     if (hasVariation) {
-      // If there's variation, show best (lowest grade) and worst (highest grade)
-      bestSubject = subjectsWithNames.reduce((best, current) => 
-        (current.grade < best.grade ? current : best))
-      worstSubject = subjectsWithNames.reduce((worst, current) => 
-        (current.grade > worst.grade ? current : worst))
+      bestSubject = subjectsWithNames.reduce((best, current) =>
+        current.grade < best.grade ? current : best
+      )
+      worstSubject = subjectsWithNames.reduce((worst, current) =>
+        current.grade > worst.grade ? current : worst
+      )
     } else {
-      // If grades are similar, find the course with highest grade
-      // If multiple courses have same highest grade, pick the one with highest units
-      // If still tied, pick the earliest one
       bestSubject = subjectsWithNames.reduce((best, current) => {
-        if (current.grade < best.grade) {
-          return current
-        } else if (current.grade === best.grade) {
-          if (current.units > best.units) {
-            return current
-          } else if (current.units === best.units) {
-            // If same grade and units, return the earlier one (keep current best)
-            return best
-          }
+        if (current.grade < best.grade) return current
+        else if (current.grade === best.grade) {
+          if (current.units > best.units) return current
         }
         return best
       })
@@ -109,7 +100,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
 
     return {
       best: bestSubject,
-      worst: worstSubject, // This will be null when grades are similar
+      worst: worstSubject,
       hasVariation,
     }
   }
@@ -118,9 +109,34 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
   const IconComponent = standing.icon
   const insights = getPerformanceInsights()
 
+  useEffect(() => {
+    const duration = 2 * 1000
+    const animationEnd = Date.now() + duration
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 }
+
+    const interval: any = setInterval(() => {
+      const timeLeft = animationEnd - Date.now()
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval)
+      }
+
+      const particleCount = 100 * (timeLeft / duration)
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: {
+          x: Math.random(),
+          y: Math.random() - 0.2,
+        },
+      })
+    }, 250)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="shadow-2xl border-0 overflow-hidden mb-6 md:mb-8 rounded-xl bg-white">
-      {/* Custom Header - Dynamic Color Based on Standing */}
       <div className={`bg-gradient-to-r ${standing.headerGradient} text-white px-4 md:px-6 py-6 rounded-t-xl`}>
         <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3">
           <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
@@ -128,26 +144,19 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
         </h2>
       </div>
 
-      {/* Content */}
       <div className="p-6 md:p-8">
         <div className="text-center">
-          {/* Dynamic Circle Color Based on Standing */}
-          <div
-            className={`inline-flex items-center justify-center w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br ${standing.circleGradient} mb-4 md:mb-6`}
-          >
+          <div className={`inline-flex items-center justify-center w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br ${standing.circleGradient} mb-4 md:mb-6`}>
             <div className={`text-3xl md:text-5xl font-bold ${standing.textColor}`}>{gwa.toFixed(4)}</div>
           </div>
 
           <div className="mb-4 md:mb-6">
-            <Badge
-              className={`${standing.color} px-4 md:px-6 py-2 md:py-3 text-base md:text-lg font-semibold rounded-full shadow-lg transition-colors`}
-            >
+            <Badge className={`${standing.color} px-4 md:px-6 py-2 md:py-3 text-base md:text-lg font-semibold rounded-full shadow-lg transition-colors`}>
               <IconComponent className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               {standing.status}
             </Badge>
           </div>
 
-          {/* Dynamic Stats Cards Color Based on Standing */}
           <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-md mx-auto mb-6 md:mb-8">
             <div className={`text-center p-3 md:p-4 ${standing.statsBackground} rounded-lg`}>
               <div className={`text-xl md:text-2xl font-bold truncate ${standing.statsTextColor}`}>{totalUnits.toFixed(2)}</div>
@@ -161,7 +170,6 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
             </div>
           </div>
 
-          {/* Performance Insights */}
           {insights && (
             <div className="border-t border-gray-200 pt-6 md:pt-8">
               <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-4 md:mb-6 flex items-center justify-center gap-2">
@@ -171,7 +179,6 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
 
               {(insights.best || insights.worst) && (
                 <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 text-left mb-6 md:mb-8">
-                  {/* Best Performance */}
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 w-full max-w-sm">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -190,7 +197,6 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
                     </div>
                   </div>
 
-                  {/* Needs Attention */}
                   {insights.worst && (
                     <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 w-full max-w-sm">
                       <div className="flex items-center gap-2 mb-2">
