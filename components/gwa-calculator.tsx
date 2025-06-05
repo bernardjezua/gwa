@@ -108,8 +108,7 @@ export default function GwaCalculator() {
     const totalUnits = validSubjects.reduce((sum, subject) => sum + subject.units, 0)
 
     const calculatedGwa = totalWeightedGrades / totalUnits
-    const roundedGwa = Math.round(calculatedGwa * 100) / 100
-    setGwa(roundedGwa)
+    setGwa(calculatedGwa)
     setHasCalculated(true)
 
     const excludedCount = subjects.filter((s) => isExcludedFromGWA(s.name)).length
@@ -118,7 +117,7 @@ export default function GwaCalculator() {
       numberOfSubjects: validSubjects.length,
       totalUnits,
       excludedCourses: excludedCount,
-      averageGrade: roundedGwa,
+      averageGrade: calculatedGwa,
     })
 
     let standing = "Needs Improvement"
@@ -129,7 +128,7 @@ export default function GwaCalculator() {
 
     toast({
       title: "GWA Calculated Successfully!",
-      description: `Your GWA is ${calculatedGwa.toFixed(2)} - ${standing}.`,
+      description: `Your GWA is ${calculatedGwa.toFixed(4)} - ${standing}.`,
       variant: "success",
     })
   }

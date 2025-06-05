@@ -133,9 +133,9 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
         <div className="text-center">
           {/* Dynamic Circle Color Based on Standing */}
           <div
-            className={`inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br ${standing.circleGradient} mb-4 md:mb-6`}
+            className={`inline-flex items-center justify-center w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br ${standing.circleGradient} mb-4 md:mb-6`}
           >
-            <div className={`text-3xl md:text-5xl font-bold ${standing.textColor}`}>{gwa.toFixed(2)}</div>
+            <div className={`text-3xl md:text-5xl font-bold ${standing.textColor}`}>{gwa.toFixed(4)}</div>
           </div>
 
           <div className="mb-4 md:mb-6">
@@ -185,7 +185,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-green-700">{insights.best.grade.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-green-700">{insights.best.grade.toFixed(4)}</span>
                       <span className="text-xs text-gray-500">{insights.best.units} units</span>
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-bold text-orange-700">{insights.worst.grade.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-orange-700">{insights.worst.grade.toFixed(4)}</span>
                         <span className="text-xs text-gray-500">{insights.worst.units} units</span>
                       </div>
                     </div>
