@@ -136,8 +136,8 @@ export default function SubjectTable({
                     <div className="col-span-2">
                       <Input
                         type="number"
-                        min="0"
-                        max="10"
+                        min="1"
+                        max="15"
                         step="0.5"
                         value={subject.units || ""}
                         onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
@@ -231,8 +231,8 @@ export default function SubjectTable({
                         <label className="block text-sm font-medium text-gray-700 mb-1">Units</label>
                         <Input
                           type="number"
-                          min="0"
-                          max="12"
+                          min="1"
+                          max="15"
                           step="0.5"
                           value={subject.units}
                           onChange={(e) => {
