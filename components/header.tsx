@@ -5,17 +5,7 @@ export default function Header() {
         <div className="flex flex-col items-center justify-center gap-4 text-center">
           {/* Logo Icon */}
           <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 shadow-md">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-10 h-10 text-yellow-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-              <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
-            </svg>
+            <img src="/favicon.png" alt="UP GWA Calculator Logo" className="w-16 h-16" />
           </div>
 
           {/* Title & Tagline */}
