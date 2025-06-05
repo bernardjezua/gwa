@@ -23,8 +23,13 @@ export default function GwaCalculator() {
   ])
   const [gwa, setGwa] = useState<number | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
+  const [additionalStats, setAdditionalStats] = useState<{
+    numberOfSubjects: number
+    totalUnits: number
+    excludedCourses: number
+    averageGrade: number
+  } | null>(null)
 
-  // Check if subject is excluded from GWA calculation
   const isExcludedFromGWA = (subjectName: string): boolean => {
     const name = subjectName.toUpperCase()
     return name.includes("HK") || name.includes("PE") || name.includes("NSTP")
@@ -43,21 +48,16 @@ export default function GwaCalculator() {
 
   const updateSubject = (id: number, field: keyof Subject, value: string | number) => {
     setSubjects(subjects.map((s) => (s.id === id ? { ...s, [field]: value } : s)))
-    // Reset calculation state when subjects are modified
     setHasCalculated(false)
   }
 
   const validateInputs = () => {
     const validSubjects = subjects.filter((s) => {
-      // Check if subject has valid units and grade
-      const hasValidUnits = s.units > 0;
-      const hasValidGrade = s.grade > 0;
-      
-      // Check if subject is excluded from GWA calculation
-      const isExcluded = isExcludedFromGWA(s.name);
-      
-      return hasValidUnits && hasValidGrade && !isExcluded;
-    });
+      const hasValidUnits = s.units > 0
+      const hasValidGrade = s.grade > 0
+      const isExcluded = isExcludedFromGWA(s.name)
+      return hasValidUnits && hasValidGrade && !isExcluded
+    })
 
     if (validSubjects.length === 0) {
       toast({
@@ -68,7 +68,6 @@ export default function GwaCalculator() {
       return false
     }
 
-    // Check for invalid grades
     const invalidGrades = validSubjects.filter((s) => s.grade < 1.0 || s.grade > 5.0)
     if (invalidGrades.length > 0) {
       toast({
@@ -98,33 +97,46 @@ export default function GwaCalculator() {
       return
     }
 
-    // Only include subjects that are not excluded from GWA calculation
-    const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
-    const totalWeightedGrades = validSubjects.reduce((sum, subject) => sum + subject.grade * subject.units, 0)
+    const validSubjects = subjects.filter(
+      (s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
+    )
+
+    const totalWeightedGrades = validSubjects.reduce(
+      (sum, subject) => sum + subject.grade * subject.units,
+      0
+    )
     const totalUnits = validSubjects.reduce((sum, subject) => sum + subject.units, 0)
 
     const calculatedGwa = totalWeightedGrades / totalUnits
-    setGwa(Math.round(calculatedGwa * 100) / 100)
+    const roundedGwa = Math.round(calculatedGwa * 100) / 100
+    setGwa(roundedGwa)
     setHasCalculated(true)
-
-    // Determine academic standing for toast message
-    let standing = "Good Standing"
-    if (calculatedGwa < 1.45) standing = "University Scholar"
-    else if (calculatedGwa < 1.75) standing = "College Scholar"
-    else if (calculatedGwa < 2.0) standing = "Honor Roll"
 
     const excludedCount = subjects.filter((s) => isExcludedFromGWA(s.name)).length
 
+    setAdditionalStats({
+      numberOfSubjects: validSubjects.length,
+      totalUnits,
+      excludedCourses: excludedCount,
+      averageGrade: roundedGwa,
+    })
+
+    let standing = "Needs Improvement"
+    if (calculatedGwa < 1.45) standing = "University Scholar"
+    else if (calculatedGwa < 1.75) standing = "College Scholar"
+    else if (calculatedGwa < 2.0) standing = "Honor Roll"
+    else if (calculatedGwa < 3.0) standing = "Good Standing"
+
     toast({
       title: "GWA Calculated Successfully!",
-      description: `Your GWA is ${calculatedGwa.toFixed(2)} - ${standing}${excludedCount > 0 ? ` (${excludedCount} course/s excluded).` : "."}`,
+      description: `Your GWA is ${calculatedGwa.toFixed(2)} - ${standing}.`,
       variant: "success",
     })
   }
 
-  const totalUnits = subjects.reduce((sum, s) => sum + (s.units || 0), 0)
-  const validSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name))
-  const allValidSubjects = subjects.filter((s) => s.units > 0 && s.grade > 0) // For stats display
+  const validSubjects = subjects.filter(
+    (s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
+  )
 
   return (
     <div className="flex flex-col w-full m-0 p-0 overflow-x-hidden">
@@ -139,10 +151,10 @@ export default function GwaCalculator() {
           onCalculateGWA={calculateGWA}
         />
 
-        {gwa !== null && hasCalculated && (
+        {gwa !== null && hasCalculated && additionalStats && (
           <ResultsCard
             gwa={gwa}
-            totalUnits={validSubjects.reduce((sum, s) => sum + s.units, 0)}
+            totalUnits={additionalStats.totalUnits}
             validSubjects={validSubjects}
           />
         )}

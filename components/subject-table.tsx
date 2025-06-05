@@ -28,6 +28,10 @@ const gradeOptions = [
   { value: "3.00", label: "3.00 (Pass)" },
   { value: "4.00", label: "4.00 (Conditional)" },
   { value: "5.00", label: "5.00 (Fail)" },
+  { value: "S", label: "S (Satisfactory)" },
+  { value: "U", label: "U (Unsatisfactory)" },
+  { value: "INC", label: "INC (Incomplete)" },
+  { value: "DRP", label: "DRP (Dropped)" },
 ]
 
 export default function SubjectTable({
@@ -38,21 +42,31 @@ export default function SubjectTable({
   onCalculateGWA,
 }: SubjectTableProps) {
   // Check if subject is excluded from GWA calculation
-  const isExcludedFromGWA = (subjectName: string): boolean => {
+  const isExcludedFromGWA = (subjectName: string, grade?: string | number): boolean => {
     const name = subjectName.toUpperCase()
-    return name.includes("HK") || name.includes("PE") || name.includes("NSTP")
+    const gradeStr = String(grade).toUpperCase()
+    return (
+      name.includes("HK") ||
+      name.includes("PE") ||
+      name.includes("NSTP") ||
+      ["S", "U", "INC", "DRP"].includes(gradeStr)
+    )
   }
 
   // Format grade to ensure it has 2 decimal places for display and comparison
-  const formatGrade = (grade: number): string => {
-    if (grade === 0) return ""
-    return grade.toFixed(2)
+  const formatGrade = (grade: number | string): string => {
+    if (grade === null || grade === undefined || grade === "") return ""
+    if (typeof grade === "number") {
+      return grade.toFixed(2)
+    }
+    return String(grade)
   }
 
   const handleGradeChange = (id: number, value: string) => {
-    const numValue = Number.parseFloat(value) || 0
-    onUpdateSubject(id, "grade", numValue)
-  }
+    const parsed = parseFloat(value)
+    const isNumeric = !isNaN(parsed)
+    onUpdateSubject(id, "grade", isNumeric ? parsed : value)
+  }  
 
   const handleUnitsChange = (id: number, value: string) => {
     const numValue = Number.parseFloat(value) || 0
@@ -72,7 +86,7 @@ export default function SubjectTable({
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
-          <span>HK, PE, and NSTP courses are excluded from GWA calculation.</span>
+          <span>SP/Thesis, HK, PE, and NSTP courses are excluded from GWA calculation.</span>
         </div>
       </div>
 
@@ -96,12 +110,12 @@ export default function SubjectTable({
             {/* Subject Rows */}
             <div className="divide-y divide-gray-100">
               {subjects.map((subject, index) => {
-                const isExcluded = isExcludedFromGWA(subject.name)
+                const isExcluded = isExcludedFromGWA(subject.name, subject.grade)
                 return (
                   <div
                     key={subject.id}
                     className={`grid grid-cols-12 gap-4 px-6 py-4 transition-colors ${
-                      isExcluded ? "bg-gray-50 hover:bg-gray-100 opacity-75" : "hover:bg-red-50"
+                      isExcluded ? "" : ""
                     }`}
                   >
                     <div className="col-span-5 relative">
