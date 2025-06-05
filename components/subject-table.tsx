@@ -18,13 +18,13 @@ interface SubjectTableProps {
 
 const gradeOptions = [
   { value: "1.00", label: "1.00 (Excellent)" },
-  { value: "1.25", label: "1.25 (Very Good)" },
+  { value: "1.25", label: "1.25 (Excellent)" },
   { value: "1.50", label: "1.50 (Very Good)" },
-  { value: "1.75", label: "1.75 (Good)" },
+  { value: "1.75", label: "1.75 (Very Good)" },
   { value: "2.00", label: "2.00 (Good)" },
-  { value: "2.25", label: "2.25 (Satisfactory)" },
+  { value: "2.25", label: "2.25 (Good)" },
   { value: "2.50", label: "2.50 (Satisfactory)" },
-  { value: "2.75", label: "2.75 (Fair)" },
+  { value: "2.75", label: "2.75 (Satisfactory)" },
   { value: "3.00", label: "3.00 (Pass)" },
   { value: "4.00", label: "4.00 (Conditional)" },
   { value: "5.00", label: "5.00 (Fail)" },
@@ -215,7 +215,7 @@ export default function SubjectTable({
 
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Course Code</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
@@ -254,7 +254,7 @@ export default function SubjectTable({
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1 text-sm">Grade</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Grade</label>
                         <Select
                           value={formatGrade(subject.grade)}
                           onValueChange={(value) => handleGradeChange(subject.id, value)}
