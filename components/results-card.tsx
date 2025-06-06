@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import confetti from "canvas-confetti"
 import { Badge } from "@/components/ui/badge"
 import { Award, Star, Trophy, Medal, TrendingUp } from "lucide-react"
+import UnderloadNotice from "./underload-notice"
 import type { Subject } from "./gwa-calculator"
 
 interface ResultsCardProps {
@@ -105,9 +106,14 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
     }
   }
 
+  const [hasUnderloadPermit, setHasUnderloadPermit] = useState(false)
+
   const standing = getAcademicStanding(gwa)
   const IconComponent = standing.icon
   const insights = getPerformanceInsights()
+
+  const isUnderloaded = totalUnits < 15
+  const isDisqualified = isUnderloaded && !hasUnderloadPermit
 
   useEffect(() => {
     const duration = 2 * 1000
@@ -153,7 +159,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
           <div className="mb-4 md:mb-6">
             <Badge className={`${standing.color} px-4 md:px-6 py-2 md:py-3 text-base md:text-lg font-semibold rounded-full shadow-lg transition-colors`}>
               <IconComponent className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              {standing.status}
+              {isDisqualified ? "Not Eligible (Underload)" : standing.status}
             </Badge>
           </div>
 
@@ -169,6 +175,16 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
               </div>
             </div>
           </div>
+
+          {isUnderloaded && (
+            <UnderloadNotice
+              onPermitChange={setHasUnderloadPermit}
+              standingColors={{
+                statsBackground: standing.statsBackground,
+                textColor: standing.statsTextColor,
+              }}
+            />
+          )}
 
           {insights && (
             <div className="border-t border-gray-200 pt-6 md:pt-8">
