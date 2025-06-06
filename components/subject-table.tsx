@@ -96,14 +96,19 @@ export default function SubjectTable({
         <div className="hidden md:block overflow-x-auto">
           <div className="min-w-full">
             <div className="bg-gray-50 border-b border-gray-200">
-              <div className="grid grid-cols-12 gap-4 px-6 py-4 font-semibold text-gray-700">
-                <div className="col-span-5 flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  Course Code
+              <div className="grid grid-cols-12 gap-4 px-6 py-4 font-semibold text-gray-700 items-center">
+                <div className="col-span-5 flex justify-center gap-2">
+                  <span>Course Code</span>
                 </div>
-                <div className="col-span-2">Units</div>
-                <div className="col-span-3">Grade</div>
-                <div className="col-span-2 text-center">Action</div>
+                <div className="col-span-2 flex justify-center">
+                  Units
+                </div>
+                <div className="col-span-3 flex justify-center">
+                  Grade
+                </div>
+                <div className="col-span-2 flex justify-center">
+                  Action
+                </div>
               </div>
             </div>
 
