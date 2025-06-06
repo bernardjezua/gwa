@@ -129,7 +129,7 @@ export default function GwaCalculator() {
 
     toast({
       title: "GWA Calculated Successfully!",
-      description: `Congratulations! Check your results below.`,
+      description: `You may check your results below.`,
       variant: "success",
     })
   }
