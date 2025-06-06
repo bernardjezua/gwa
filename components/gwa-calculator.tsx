@@ -129,7 +129,7 @@ export default function GwaCalculator() {
 
     toast({
       title: "GWA Calculated Successfully!",
-      description: `Your GWA is ${calculatedGwa.toFixed(4)} - ${standing}.`,
+      description: `Congratulations! Check your results below.`,
       variant: "success",
     })
   }
