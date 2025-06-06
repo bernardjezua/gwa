@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
 
 interface UnderloadNoticeProps {
   onPermitChange: (hasPermit: boolean) => void
@@ -18,9 +16,11 @@ export default function UnderloadNotice({
 }: UnderloadNoticeProps) {
   const [hasPermit, setHasPermit] = useState<boolean>(false)
 
-  const handleChange = (checked: boolean) => {
-    setHasPermit(checked)
-    onPermitChange(checked)
+  const togglePermit = () => {
+    setHasPermit((prev) => {
+      onPermitChange(!prev)
+      return !prev
+    })
   }
 
   return (
@@ -34,16 +34,14 @@ export default function UnderloadNotice({
         You are currently enrolled in less than 15 credited units. Unless you have an official underload permit, you are not eligible for academic honors. This also applies to previous semesters (AY 2022-2023 onwards).
       </p>
 
-      <div className="flex justify-center items-center gap-2">
-        <Checkbox
-          id="underload-permit"
-          checked={hasPermit}
-          onCheckedChange={handleChange}
-        />
-        <Label htmlFor="underload-permit" className={`text-sm ${standingColors.textColor}`}>
-          I have an underload permit
-        </Label>
-      </div>
+      <button
+        onClick={togglePermit}
+        className={`font-bold underline text-sm cursor-pointer ${hasPermit ? "text-green-600" : standingColors.textColor}`}
+        type="button"
+        aria-pressed={hasPermit}
+      >
+        I have an underload permit
+      </button>
     </div>
   )
 }

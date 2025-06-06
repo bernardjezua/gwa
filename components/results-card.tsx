@@ -176,7 +176,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
             </div>
           </div>
 
-          {isUnderloaded && (
+          {isUnderloaded && !hasUnderloadPermit && (
             <UnderloadNotice
               onPermitChange={setHasUnderloadPermit}
               standingColors={{

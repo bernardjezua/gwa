@@ -38,11 +38,13 @@ export default function GwaCalculator() {
   const addSubject = () => {
     const newId = Math.max(...subjects.map((s) => s.id)) + 1
     setSubjects([...subjects, { id: newId, name: "", units: 3, grade: 1.0 }])
+    setHasCalculated(false) // Reset results visibility on adding a subject
   }
 
   const removeSubject = (id: number) => {
     if (subjects.length > 1) {
       setSubjects(subjects.filter((s) => s.id !== id))
+      setHasCalculated(false) // Optional: also reset when removing a subject
     }
   }
 
@@ -80,7 +82,6 @@ export default function GwaCalculator() {
 
     // Check for invalid units
     const invalidUnits = validSubjects.filter((s) => s.units < 0.1 || s.units > 20)
-    console.log(invalidUnits)
     if (invalidUnits.length > 0) {
       toast({
         title: "Invalid Units",
@@ -120,12 +121,6 @@ export default function GwaCalculator() {
       excludedCourses: excludedCount,
       averageGrade: calculatedGwa,
     })
-
-    let standing = "Needs Improvement"
-    if (calculatedGwa < 1.45) standing = "University Scholar"
-    else if (calculatedGwa < 1.75) standing = "College Scholar"
-    else if (calculatedGwa < 2.0) standing = "Honor Roll"
-    else if (calculatedGwa < 3.0) standing = "Good Standing"
 
     toast({
       title: "GWA Calculated Successfully!",

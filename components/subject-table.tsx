@@ -295,7 +295,7 @@ export default function SubjectTable({
               className="group border-2 border-red-700 text-red-700 hover:bg-red-800 hover:border-red-800 hover:text-white w-full sm:w-auto transition-all duration-200 shadow-sm hover:shadow-md font-semibold text-base"
             >
               <Plus className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
-              Add Subject
+              Add Course
             </Button>
 
             <div className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
