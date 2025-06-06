@@ -159,7 +159,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
           <div className="mb-4 md:mb-6">
             <Badge className={`${standing.color} px-4 md:px-6 py-2 md:py-3 text-base md:text-lg font-semibold rounded-full shadow-lg transition-colors`}>
               <IconComponent className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              {isDisqualified ? "Not Eligible (Underload)" : standing.status}
+              {isDisqualified && gwa <= 3.0 ? "Good Standing" : standing.status}
             </Badge>
           </div>
 
