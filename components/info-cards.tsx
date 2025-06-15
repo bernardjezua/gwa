@@ -32,7 +32,7 @@ export default function InfoCards() {
         <div className="bg-red-50 px-6 py-6 rounded-t-xl">
           <h3 className="text-lg font-semibold text-red-900 flex items-center gap-2">
             <Award className="w-5 h-5" />
-            UP Academic Standing
+            Academic Standing
           </h3>
         </div>
 

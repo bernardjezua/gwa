@@ -76,7 +76,7 @@ export default function SubjectTable({
   return (
     <div className="shadow-2xl border-0 overflow-hidden mb-8 rounded-xl bg-white">
       {/* Custom Header */}
-      <div className="bg-gradient-to-r from-red-800 to-red-700 text-white px-4 md:px-6 py-6 rounded-t-xl">
+      <div className="bg-gradient-to-r from-red-800 to-red-700 text-white px-6 py-6 rounded-t-xl">
         <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3 mb-2">
           <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
           Course Information
@@ -86,7 +86,7 @@ export default function SubjectTable({
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
-          <span>SP/Thesis, HK, PE, and NSTP courses are excluded from GWA calculation.</span>
+          <span className="">SP/Thesis, HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
         </div>
       </div>
 
