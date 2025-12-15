@@ -13,7 +13,7 @@ export default function Header() {
             UP GWA Calculator
           </h1>
           <p className="text-red-200 max-w-xl text-sm sm:text-base leading-relaxed">
-            Need to calculate your GWA for the semester? Enter your courses and grades below to get an instant breakdown.
+            Need to calculate your General Weighted Average (GWA) for the semester? Enter your courses and grades below to get an instant breakdown.
           </p>
         </div>
       </div>
