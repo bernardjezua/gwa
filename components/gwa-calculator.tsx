@@ -64,7 +64,7 @@ export default function GwaCalculator() {
     if (validSubjects.length === 0) {
       toast({
         title: "Incomplete Information",
-        description: "Please enter missing fields.",
+        description: "Please enter missing fields or at least one course with a numerical grade.",
         variant: "fail",
       })
       return false
