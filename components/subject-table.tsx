@@ -49,7 +49,7 @@ export default function SubjectTable({
       name.includes("HK") ||
       name.includes("PE") ||
       name.includes("NSTP") ||
-      ["S", "U", "INC", "DRP"].includes(gradeStr)
+      ["INC", "DRP"].includes(gradeStr)
     )
   }
 
