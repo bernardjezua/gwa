@@ -49,7 +49,7 @@ export default function SubjectTable({
       name.includes("HK") ||
       name.includes("PE") ||
       name.includes("NSTP") ||
-      ["INC", "DRP"].includes(gradeStr)
+      ["S", "U", "INC", "DRP"].includes(gradeStr)
     )
   }
 
@@ -86,7 +86,7 @@ export default function SubjectTable({
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
-          <span className="">HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
+          <span className="">SP/Thesis, HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
         </div>
       </div>
 
