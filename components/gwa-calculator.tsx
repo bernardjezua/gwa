@@ -33,7 +33,7 @@ export default function GwaCalculator() {
   const isExcludedFromGWA = (subject: Subject): boolean => {
     const name = subject.name.toUpperCase()
     const grade = subject.grade.toString().toUpperCase()
-    
+  
     return (
       name.includes("HK") || 
       name.includes("PE") || 
@@ -64,7 +64,6 @@ export default function GwaCalculator() {
   const validateInputs = () => {
     const academicSubjects = subjects.filter((s) => !isExcludedFromGWA(s))
 
-    // Check if there's at least one subject with a valid numeric grade (not 0, S, or U)
     const numericSubjects = academicSubjects.filter((s) => {
       const g = s.grade.toString().toUpperCase()
       const val = parseFloat(g)
@@ -80,7 +79,6 @@ export default function GwaCalculator() {
       return false
     }
 
-    // Check for units or formatting errors in any academic subject
     for (const s of academicSubjects) {
       if (s.units <= 0 || s.units > 20) {
         toast({
@@ -97,21 +95,19 @@ export default function GwaCalculator() {
 
   const calculateGWA = () => {
     if (!validateInputs()) return
+
     const activeSubjects = subjects.filter((s) => !isExcludedFromGWA(s))
-    const numericSubjects = activeSubjects.filter((s) => {
+    const totalWeightedGrades = activeSubjects.reduce((sum, s) => {
       const g = s.grade.toString().toUpperCase()
-      const val = parseFloat(g)
-      return !isNaN(val) && g !== "S" && g !== "U"
-    })
+      const numericVal = parseFloat(g)
+      if (!isNaN(numericVal) && g !== "S" && g !== "U") {
+        return sum + numericVal * s.units
+      }
+      return sum
+    }, 0)
 
-    const totalWeightedGrades = numericSubjects.reduce(
-      (sum, s) => sum + Number(s.grade) * s.units,
-      0
-    )
-
-    const gwaUnits = numericSubjects.reduce((sum, s) => sum + s.units, 0)
     const totalAcademicUnits = activeSubjects.reduce((sum, s) => sum + s.units, 0)
-    const calculatedGwa = totalWeightedGrades / gwaUnits
+    const calculatedGwa = totalWeightedGrades / totalAcademicUnits
     
     setGwa(calculatedGwa)
     setHasCalculated(true)
