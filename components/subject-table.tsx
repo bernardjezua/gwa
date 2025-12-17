@@ -86,7 +86,7 @@ export default function SubjectTable({
         </p>
         <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
           <Info className="w-4 h-4" />
-          <span className="">SP/Thesis, HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
+          <span className="">HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
         </div>
       </div>
 
