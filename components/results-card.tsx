@@ -183,7 +183,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
 
           <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-lg mx-auto mb-8">
             <div className={`text-center p-5 md:p-6 ${standing.statsBackground} rounded-2xl border border-white/50 shadow-sm transition-all hover:shadow-md`}>
-              <div className={`text-2xl md:text-3xl font-bold truncate ${standing.statsTextColor}`}>{totalUnits.toFixed(1)}</div>
+              <div className={`text-2xl md:text-3xl font-bold truncate ${standing.statsTextColor}`}>{parseFloat(totalUnits.toFixed(2))}</div>
               <div className="text-sm font-medium text-gray-600 mt-1 uppercase tracking-wider text-[11px]">Total Units</div>
             </div>
             <div className={`text-center p-5 md:p-6 ${standing.statsBackground} rounded-2xl border border-white/50 shadow-sm transition-all hover:shadow-md`}>

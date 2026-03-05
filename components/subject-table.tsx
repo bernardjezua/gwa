@@ -10,6 +10,7 @@ import type { Subject } from "./gwa-calculator"
 
 interface SubjectTableProps {
   subjects: Subject[]
+  invalidSubjects: number[]
   onAddSubject: () => void
   onRemoveSubject: (id: number) => void
   onUpdateSubject: (id: number, field: keyof Subject, value: string | number) => void
@@ -36,6 +37,7 @@ const gradeOptions = [
 
 export default function SubjectTable({
   subjects,
+  invalidSubjects,
   onAddSubject,
   onRemoveSubject,
   onUpdateSubject,
@@ -69,8 +71,60 @@ export default function SubjectTable({
   }  
 
   const handleUnitsChange = (id: number, value: string) => {
-    const numValue = Number.parseFloat(value) || 0
-    onUpdateSubject(id, "units", numValue)
+    // Return early if the unit input is left clear
+    if (value === "") {
+      onUpdateSubject(id, "units", "") // Pass empty string natively
+      return
+    }
+
+    // Replace invalid characters; keep only numbers and one decimal point
+    const numericStr = value.replace(/[^0-9.]/g, "")
+    
+    // Check if there's more than one decimal point
+    const parts = numericStr.split(".")
+    if (parts.length > 2) {
+      return
+    }
+
+    // Check if more than 2 decimal places
+    if (parts.length === 2 && parts[1].length > 2) {
+      return
+    }
+
+    const numValue = parseFloat(numericStr)
+    
+    // Avoid parsing NaN
+    if (isNaN(numValue)) {
+      onUpdateSubject(id, "units", "") // Use empty string to safely reset bad input
+      return
+    }
+    
+    // Only allow max up to 10
+    if (numValue > 10) {
+      return
+    }
+    
+    // Restrict typing decimals that would definitely result in < 0.25
+    // Example: "0.0" and "0.1" are blocked
+    if (parts.length === 2 && parts[1].length >= 1) {
+      if (parts[0] === "0") {
+        if (parts[1][0] === "0" || parts[1][0] === "1") {
+          return // Block 0.0, 0.1
+        }
+        if (parts[1].length === 2 && parts[1][0] === "2" && ["0", "1", "2", "3", "4"].includes(parts[1][1])) {
+          return // Block 0.20, 0.21, 0.22, 0.23, 0.24
+        }
+      }
+    }
+    
+    // Remove leading zeros (e.g., '01' -> '1', '002' -> '2') but keep '0' or '0.'
+    let finalStr = numericStr
+    if (finalStr.length > 1 && finalStr.startsWith("0") && !finalStr.startsWith("0.")) {
+      finalStr = finalStr.replace(/^0+/, "")
+    }
+
+    // We pass the string directly to state to allow '0', '0.', '1.0' etc. to stay accurately rendered
+    onUpdateSubject(id, "units", finalStr)
   }
 
   return (
@@ -83,8 +137,8 @@ export default function SubjectTable({
           </div>
           Course Information
         </h2>
-        <p className="text-up-maroon-100 text-sm md:text-base font-medium">
-          Enter your academic courses, units, and grades. Course codes are optional.
+        <p className="text-up-maroon-100 text-sm md:text-base font-medium leading-relaxed max-w-3xl">
+          Enter your academic courses, corresponding units, and grades to calculate your GWA. Course codes are limited to 12 characters. Units can be from 0.25 to 10.
         </p>
         <div className="mt-4 inline-flex items-center gap-2 text-up-maroon-100 text-xs md:text-sm bg-up-maroon-900/30 px-3 py-1.5 rounded-md border border-up-maroon-600/30">
           <Info className="w-4 h-4 flex-shrink-0" />
@@ -128,7 +182,11 @@ export default function SubjectTable({
                     <div className="col-span-6 relative">
                       <Input
                         value={subject.name}
-                        onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
+                        onChange={(e) => {
+                          const val = e.target.value.toUpperCase().slice(0, 12);
+                          onUpdateSubject(subject.id, "name", val);
+                        }}
+                        maxLength={12}
                         className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
                           isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
@@ -144,14 +202,18 @@ export default function SubjectTable({
                       <Input
                         type="number"
                         min="0"
-                        max="20"
-                        step="1"
-                        value={subject.units || ""}
+                        max="10"
+                        step="0.01"
+                        value={subject.units}
                         onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
-                        className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                        className={`text-sm text-left shadow-sm ${
+                          invalidSubjects.includes(subject.id) 
+                            ? "border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500 ring-1 ring-red-500" 
+                            : "border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500"
+                        } ${
                           isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
-                        placeholder="3.0"
+                        placeholder=""
                       />
                     </div>
                     <div className="col-span-3">
@@ -224,10 +286,14 @@ export default function SubjectTable({
                   <div className="space-y-3">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
-                      <Input
-                        value={subject.name}
-                        onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                        <Input
+                          value={subject.name}
+                          onChange={(e) => {
+                            const val = e.target.value.toUpperCase().slice(0, 12);
+                            onUpdateSubject(subject.id, "name", val);
+                          }}
+                          maxLength={12}
+                          className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
                           isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
                         placeholder={`Subject ${index + 1}`}
@@ -240,24 +306,18 @@ export default function SubjectTable({
                         <Input
                           type="number"
                           min="0"
-                          max="20"
-                          step="1"
+                          max="10"
+                          step="0.01"
                           value={subject.units}
-                          onChange={(e) => {
-                            const rawValue = e.target.value;
-                            const parsedValue = rawValue === "" ? "" : parseFloat(rawValue);
-                            handleUnitsChange(subject.id, parsedValue.toString());
-                          }}
-                          onBlur={(e) => {
-                            // If the user left the input empty, reset to 3
-                            if (e.target.value === "") {
-                              handleUnitsChange(subject.id, "3");
-                            }
-                          }}
-                          className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                          onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
+                          className={`text-sm text-left shadow-sm ${
+                            invalidSubjects.includes(subject.id) 
+                              ? "border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500 ring-1 ring-red-500" 
+                              : "border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500"
+                          } ${
                             isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                           }`}
-                          placeholder="3.0"
+                          placeholder=""
                         />
                       </div>
 

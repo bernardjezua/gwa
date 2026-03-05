@@ -11,7 +11,7 @@ import { toast } from "./toast"
 export interface Subject {
   id: number
   name: string
-  units: number
+  units: number | string
   grade: number
 }
 
@@ -23,6 +23,7 @@ export default function GwaCalculator() {
   ])
   const [gwa, setGwa] = useState<number | null>(null)
   const [hasCalculated, setHasCalculated] = useState(false)
+  const [invalidSubjects, setInvalidSubjects] = useState<number[]>([]) // Array of Subject IDs
   const [additionalStats, setAdditionalStats] = useState<{
     numberOfSubjects: number
     totalUnits: number
@@ -51,11 +52,14 @@ export default function GwaCalculator() {
   const updateSubject = (id: number, field: keyof Subject, value: string | number) => {
     setSubjects(subjects.map((s) => (s.id === id ? { ...s, [field]: value } : s)))
     setHasCalculated(false)
+    setInvalidSubjects(invalidSubjects.filter(invalidId => invalidId !== id)) // Clear error state on edit
   }
 
   const validateInputs = () => {
+    // Check if there are no valid subjects at all (all empty or excluded)
     const validSubjects = subjects.filter((s) => {
-      const hasValidUnits = s.units > 0
+      const u = Number(s.units)
+      const hasValidUnits = !isNaN(u) && s.units !== "" && u >= 0.25 && u <= 10
       const hasValidGrade = s.grade > 0
       const isExcluded = isExcludedFromGWA(s.name)
       return hasValidUnits && hasValidGrade && !isExcluded
@@ -80,17 +84,23 @@ export default function GwaCalculator() {
       return false
     }
 
-    // Check for invalid units
-    const invalidUnits = validSubjects.filter((s) => s.units < 0.1 || s.units > 20)
+    // Check for invalid, zero, missing, or > 10 units
+    const invalidUnits = subjects.filter((s) => {
+      const u = Number(s.units)
+      return (s.units === "" || isNaN(u) || u < 0.25 || u > 10) && !isExcludedFromGWA(s.name)
+    })
+    
     if (invalidUnits.length > 0) {
+      setInvalidSubjects(invalidUnits.map(s => s.id))
       toast({
         title: "Invalid Units",
-        description: "Units must be within the range of 0.1 to 20.",
+        description: "Units must be between 0.25 and 10.",
         variant: "fail",
       })
       return false
     }
 
+    setInvalidSubjects([])
     return true
   }
 
@@ -100,14 +110,14 @@ export default function GwaCalculator() {
     }
 
     const validSubjects = subjects.filter(
-      (s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
+      (s) => Number(s.units) > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
     )
 
     const totalWeightedGrades = validSubjects.reduce(
-      (sum, subject) => sum + subject.grade * subject.units,
+      (sum, subject) => sum + subject.grade * Number(subject.units),
       0
     )
-    const totalUnits = validSubjects.reduce((sum, subject) => sum + subject.units, 0)
+    const totalUnits = validSubjects.reduce((sum, subject) => sum + Number(subject.units), 0)
 
     const calculatedGwa = totalWeightedGrades / totalUnits
     setGwa(calculatedGwa)
@@ -130,7 +140,7 @@ export default function GwaCalculator() {
   }
 
   const validSubjects = subjects.filter(
-    (s) => s.units > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
+    (s) => Number(s.units) > 0 && s.grade > 0 && !isExcludedFromGWA(s.name)
   )
 
   return (
@@ -140,6 +150,7 @@ export default function GwaCalculator() {
       <main className="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <SubjectTable
           subjects={subjects}
+          invalidSubjects={invalidSubjects}
           onAddSubject={addSubject}
           onRemoveSubject={removeSubject}
           onUpdateSubject={updateSubject}
