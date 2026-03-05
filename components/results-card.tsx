@@ -159,7 +159,7 @@ export default function ResultsCard({ gwa, totalUnits, validSubjects }: ResultsC
           <div className="p-2.5 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
             <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </div>
-          Your Final GWA
+          Your GWA Result
         </h2>
       </div>
 
