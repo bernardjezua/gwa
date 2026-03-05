@@ -10,6 +10,10 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'sans-serif'],
+        heading: ['var(--font-heading)', 'sans-serif'],
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -60,6 +64,34 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
+  			},
+  			'up-maroon': {
+  				DEFAULT: '#7b1113',
+  				50: '#fcf3f3',
+  				100: '#f9e4e4',
+  				200: '#f2cdcc',
+  				300: '#e5abab',
+  				400: '#d37d7c',
+  				500: '#bc5453',
+  				600: '#a33d3c',
+  				700: '#893130',
+  				800: '#7b1113',
+  				900: '#602525',
+  				950: '#341010',
+  			},
+  			'up-green': {
+  				DEFAULT: '#014421',
+  				50: '#f2fbf5',
+  				100: '#e1f6e8',
+  				200: '#c3ecd3',
+  				300: '#95dbb3',
+  				400: '#5fc18a',
+  				500: '#38a368',
+  				600: '#278351',
+  				700: '#226842',
+  				800: '#1e5336',
+  				900: '#014421',
+  				950: '#0e291c',
   			}
   		},
   		borderRadius: {

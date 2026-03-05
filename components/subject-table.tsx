@@ -74,19 +74,21 @@ export default function SubjectTable({
   }
 
   return (
-    <div className="shadow-2xl border-0 overflow-hidden mb-8 rounded-xl bg-white">
+    <div className="shadow-xl border-up-maroon-100 overflow-hidden mb-8 rounded-2xl bg-white transition-all duration-300">
       {/* Custom Header */}
-      <div className="bg-gradient-to-r from-red-800 to-red-700 text-white px-6 py-6 rounded-t-xl">
-        <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-3 mb-2">
-          <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
+      <div className="bg-gradient-to-r from-up-maroon-800 to-up-maroon-700 text-white px-6 py-6 md:px-8 md:py-8">
+        <h2 className="text-xl md:text-2xl font-heading font-bold flex items-center gap-3 mb-2 tracking-tight">
+          <div className="p-2.5 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+            <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-white" />
+          </div>
           Course Information
         </h2>
-        <p className="text-red-100 text-sm">
-          Enter your academic courses, units, and grades. Course codes are optional but recommended for performance insights.
+        <p className="text-up-maroon-100 text-sm md:text-base font-medium">
+          Enter your academic courses, units, and grades. Course codes are optional.
         </p>
-        <div className="mt-3 flex items-center gap-2 text-red-100 text-sm">
-          <Info className="w-4 h-4" />
-          <span className="">SP/Thesis, HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
+        <div className="mt-4 inline-flex items-center gap-2 text-up-maroon-100 text-xs md:text-sm bg-up-maroon-900/30 px-3 py-1.5 rounded-md border border-up-maroon-600/30">
+          <Info className="w-4 h-4 flex-shrink-0" />
+          <span>SP/Thesis, HK, PE, NSTP, and MS courses are excluded from GWA calculation.</span>
         </div>
       </div>
 
@@ -97,7 +99,7 @@ export default function SubjectTable({
           <div className="min-w-full">
             <div className="bg-gray-50 border-b border-gray-200">
               <div className="grid grid-cols-12 gap-4 px-6 py-4 font-semibold text-gray-700 items-center">
-                <div className="col-span-5 flex justify-center gap-2">
+                <div className="col-span-6 flex justify-center gap-2">
                   <span>Course Code</span>
                 </div>
                 <div className="col-span-2 flex justify-center">
@@ -106,7 +108,7 @@ export default function SubjectTable({
                 <div className="col-span-3 flex justify-center">
                   Grade
                 </div>
-                <div className="col-span-2 flex justify-center">
+                <div className="col-span-1 flex justify-center text-center">
                   Action
                 </div>
               </div>
@@ -123,17 +125,17 @@ export default function SubjectTable({
                       isExcluded ? "" : ""
                     }`}
                   >
-                    <div className="col-span-5 relative">
+                    <div className="col-span-6 relative">
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                          isExcluded ? "bg-gray-50 text-gray-600" : ""
+                        className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                          isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
                         placeholder={`Course ${index + 1}`}
                       />
                       {isExcluded && (
-                        <div className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full font-medium">
+                        <div className="absolute -top-2 -right-2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm z-10">
                           Excluded
                         </div>
                       )}
@@ -146,8 +148,8 @@ export default function SubjectTable({
                         step="1"
                         value={subject.units || ""}
                         onChange={(e) => handleUnitsChange(subject.id, e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                          isExcluded ? "bg-gray-50 text-gray-600" : ""
+                        className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                          isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
                         placeholder="3.0"
                       />
@@ -158,8 +160,8 @@ export default function SubjectTable({
                         onValueChange={(value) => handleGradeChange(subject.id, value)}
                       >
                         <SelectTrigger
-                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                            isExcluded ? "bg-gray-50 text-gray-600" : ""
+                          className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                            isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                           }`}
                         >
                           <SelectValue placeholder="Select grade" />
@@ -173,13 +175,14 @@ export default function SubjectTable({
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="col-span-2 flex justify-center">
+                    <div className="col-span-1 flex justify-center items-center">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => onRemoveSubject(subject.id)}
                         disabled={subjects.length === 1}
-                        className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                        className="border-red-200/60 text-red-500 bg-red-50/30 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors shadow-sm disabled:opacity-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200"
+                        title="Remove Course"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -212,7 +215,7 @@ export default function SubjectTable({
                       size="sm"
                       onClick={() => onRemoveSubject(subject.id)}
                       disabled={subjects.length === 1}
-                      className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                      className="border-red-200/60 text-red-500 bg-red-50/30 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors shadow-sm disabled:opacity-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -224,8 +227,8 @@ export default function SubjectTable({
                       <Input
                         value={subject.name}
                         onChange={(e) => onUpdateSubject(subject.id, "name", e.target.value)}
-                        className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                          isExcluded ? "bg-gray-50 text-gray-600" : ""
+                        className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                          isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                         }`}
                         placeholder={`Subject ${index + 1}`}
                       />
@@ -251,8 +254,8 @@ export default function SubjectTable({
                               handleUnitsChange(subject.id, "3");
                             }
                           }}
-                          className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                            isExcluded ? "bg-gray-50 text-gray-600" : ""
+                          className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                            isExcluded ? "bg-gray-50/80 text-gray-500" : ""
                           }`}
                           placeholder="3.0"
                         />
@@ -265,8 +268,8 @@ export default function SubjectTable({
                           onValueChange={(value) => handleGradeChange(subject.id, value)}
                         >
                           <SelectTrigger
-                            className={`border-gray-300 focus:border-red-500 focus:ring-red-500 text-sm text-left ${
-                              isExcluded ? "bg-gray-50 text-gray-600" : ""
+                            className={`border-gray-200 focus-visible:ring-1 focus-visible:ring-up-maroon-500 focus-visible:border-up-maroon-500 text-sm text-left shadow-sm ${
+                              isExcluded ? "bg-gray-50 text-gray-500" : ""
                             }`}
                           >
                             <SelectValue placeholder="Select" />
@@ -291,28 +294,28 @@ export default function SubjectTable({
         <Separator />
 
         {/* Action Buttons */}
-        <div className="p-4 md:p-6 bg-gradient-to-r from-gray-50 to-red-50 rounded-b-xl border-t border-gray-100">
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-between items-center">
+        <div className="p-6 md:p-8 bg-gray-50/80 rounded-b-2xl border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
             <Button
               onClick={onAddSubject}
               variant="outline"
               size="lg"
-              className="group border-2 border-red-700 text-red-700 hover:bg-red-800 hover:border-red-800 hover:text-white w-full sm:w-auto transition-all duration-200 shadow-sm hover:shadow-md font-semibold text-base"
+              className="group border-2 border-up-maroon-700 text-up-maroon-700 hover:bg-up-maroon-50 w-full sm:w-auto transition-all duration-200 shadow-sm font-semibold text-base px-6 h-12"
             >
-              <Plus className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+              <Plus className="w-5 h-5 mr-2 transition-transform group-hover:scale-110" />
               Add Course
             </Button>
 
-            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
-              <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-              <span>Ready to calculate?</span>
-              <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+            <div className="hidden sm:flex items-center gap-2 text-sm text-gray-400 font-medium tracking-wide uppercase text-[11px]">
+              <div className="w-8 h-px bg-gray-300"></div>
+              <span>Ready to calculate</span>
+              <div className="w-8 h-px bg-gray-300"></div>
             </div>
 
             <Button
               onClick={onCalculateGWA}
               size="lg"
-              className="group bg-gradient-to-r from-red-700 via-red-800 to-red-900 hover:from-red-800 hover:via-red-900 hover:to-red-950 text-white shadow-lg hover:shadow-xl px-6 md:px-8 py-3 text-base font-semibold w-full sm:w-auto transition-all duration-200 transform hover:scale-105"
+              className="group bg-up-maroon-800 hover:bg-up-maroon-700 text-white shadow-md hover:shadow-lg px-8 py-3 h-12 text-base font-semibold w-full sm:w-auto transition-all duration-300"
             >
               Calculate GWA
             </Button>

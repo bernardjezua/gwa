@@ -1,9 +1,10 @@
 import type React from "react"
 import "@/app/globals.css"
-import { Inter } from "next/font/google"
+import { Inter, Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-heading" })
 
 export const metadata = {
   title: "UP GWA Calculator",
@@ -16,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`min-h-screen bg-background font-sans antialiased p-0 m-0 w-full ${inter.className}`}>
+      <body className={`min-h-screen bg-background font-sans antialiased p-0 m-0 w-full ${inter.variable} ${plusJakartaSans.variable}`}>
         {children}
         <Analytics />
       </body>

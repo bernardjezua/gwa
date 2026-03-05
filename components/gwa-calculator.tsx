@@ -134,10 +134,10 @@ export default function GwaCalculator() {
   )
 
   return (
-    <div className="flex flex-col w-full m-0 p-0 overflow-x-hidden">
+    <div className="flex flex-col w-full min-h-screen bg-gray-50/50 m-0 p-0 overflow-x-hidden font-sans">
       <Header />
 
-      <div className="max-w-6xl mx-auto px-6 py-8 w-full">
+      <main className="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <SubjectTable
           subjects={subjects}
           onAddSubject={addSubject}
@@ -155,8 +155,9 @@ export default function GwaCalculator() {
         )}
 
         <InfoCards />
-        <Footer />
-      </div>
+      </main>
+
+      <Footer />
     </div>
   )
 }

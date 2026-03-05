@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { AlertCircle } from "lucide-react"
 
 interface UnderloadNoticeProps {
   onPermitChange: (hasPermit: boolean) => void
@@ -25,23 +26,30 @@ export default function UnderloadNotice({
 
   return (
     <div
-      className={`pt-4 mt-4 text-center rounded-md px-4 py-5 ${standingColors.statsBackground} border-gray-200`}
+      className={`mt-6 max-w-xl mx-auto text-center rounded-xl px-5 py-5 ${standingColors.statsBackground} border border-white/40 shadow-sm relative overflow-hidden`}
     >
-      <h4 className={`text-md md:text-lg font-semibold mb-2 ${standingColors.textColor}`}>
-        Underload Notice
-      </h4>
-      <p className={`text-sm mb-4 ${standingColors.textColor}`}>
-        You are currently enrolled in less than 15 credited units. Unless you have an official underload permit, you are not eligible for academic honors. This also applies to previous semesters (AY 2022-2023 onwards).
-      </p>
+      <div className="absolute top-0 left-0 w-full h-1 bg-orange-400 opacity-60"></div>
+      
+      <div className="flex flex-col items-center gap-2.5">
+        <AlertCircle className={`w-6 h-6 ${standingColors.textColor} opacity-80`} />
+        <div>
+          <h4 className={`text-base font-bold mb-1.5 ${standingColors.textColor}`}>
+            Underload Notice
+          </h4>
+          <p className={`text-sm mb-4 max-w-lg mx-auto ${standingColors.textColor} opacity-90 leading-relaxed`}>
+            You are currently enrolled in less than 15 credited units. Unless you have an official underload permit, you are not eligible for academic honors.
+          </p>
 
-      <button
-        onClick={togglePermit}
-        className={`font-bold underline text-sm cursor-pointer ${hasPermit ? "text-green-600" : standingColors.textColor}`}
-        type="button"
-        aria-pressed={hasPermit}
-      >
-        I have an underload permit
-      </button>
+          <button
+            onClick={togglePermit}
+            className={`font-semibold text-sm mx-auto transition-all focus:outline-none flex items-center justify-center gap-2 ${hasPermit ? "text-up-green-700" : standingColors.textColor + " hover:opacity-75"} underline decoration-2 underline-offset-4`}
+            type="button"
+            aria-pressed={hasPermit}
+          >
+            I have an official underload permit
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

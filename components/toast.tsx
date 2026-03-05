@@ -23,7 +23,8 @@ const notifyListeners = () => {
 // Toast function
 export const toast = (toastData: { title: string; description: string; variant: "success" | "fail" }) => {
   const id = Date.now().toString()
-  toasts = [...toasts, { id, ...toastData }]
+  // Replace the old toasts with just the new one to prevent spam
+  toasts = [{ id, ...toastData }]
   notifyListeners()
 
   // Auto remove after 3 seconds
